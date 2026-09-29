@@ -1,1 +1,688 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+<title>Auto Check</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #020304;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    color: white;
+}
+
+/* =========================
+   STARTBILDSCHIRM
+========================= */
+
+#app {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 65%, #111820 0%, #050708 42%, #000 78%);
+}
+
+/* leichte Carbon-Struktur */
+#app::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.18;
+    background-image:
+        linear-gradient(30deg, #222 12%, transparent 12.5%, transparent 87%, #222 87.5%),
+        linear-gradient(150deg, #222 12%, transparent 12.5%, transparent 87%, #222 87.5%);
+    background-size: 35px 60px;
+    pointer-events: none;
+}
+
+/* =========================
+   LICHTER
+========================= */
+
+.lights {
+    position: absolute;
+    left: 50%;
+    top: 47%;
+    width: 80vw;
+    max-width: 500px;
+    height: 100px;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    animation: lightsOn 2s ease forwards;
+    animation-delay: 0.8s;
+    z-index: 2;
+}
+
+.light {
+    position: absolute;
+    top: 25px;
+    width: 110px;
+    height: 38px;
+    background: #dff7ff;
+    border-radius: 80% 20% 70% 20%;
+    box-shadow:
+        0 0 12px #fff,
+        0 0 35px #55cfff,
+        0 0 75px #178cff;
+}
+
+.light::after {
+    content: "";
+    position: absolute;
+    width: 190px;
+    height: 55px;
+    background: linear-gradient(
+        90deg,
+        rgba(80,210,255,0.25),
+        transparent
+    );
+    filter: blur(8px);
+}
+
+.light.left {
+    left: 0;
+    transform: rotate(8deg);
+}
+
+.light.right {
+    right: 0;
+    transform: scaleX(-1) rotate(8deg);
+}
+
+@keyframes lightsOn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+
+    40% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* =========================
+   SPORTWAGEN
+========================= */
+
+.car {
+    position: absolute;
+    left: 50%;
+    top: 58%;
+    width: 340px;
+    height: 170px;
+    transform: translate(-50%, -50%) scale(0.15);
+    opacity: 0;
+
+    animation:
+        carApproach 4.5s cubic-bezier(.15,.75,.2,1) 2.2s forwards,
+        carSlide 1.4s ease-in-out 6.7s forwards;
+
+    z-index: 5;
+}
+
+/* Karosserie */
+
+.car-body {
+    position: absolute;
+    left: 10px;
+    bottom: 35px;
+    width: 320px;
+    height: 95px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #26333d 0%,
+            #0d1419 35%,
+            #020304 80%
+        );
+
+    border-radius: 48% 48% 20% 20% / 55% 55% 25% 25%;
+
+    border: 2px solid #475661;
+
+    box-shadow:
+        inset 0 8px 20px rgba(255,255,255,.12),
+        0 20px 40px rgba(0,0,0,.9);
+}
+
+/* Dach */
+
+.car-roof {
+    position: absolute;
+    left: 82px;
+    top: 10px;
+    width: 165px;
+    height: 75px;
+
+    background:
+        linear-gradient(145deg,#283842,#071016);
+
+    border-radius: 75px 75px 10px 10px;
+
+    border: 2px solid #53616a;
+}
+
+/* Scheiben */
+
+.window {
+    position: absolute;
+    left: 102px;
+    top: 20px;
+    width: 125px;
+    height: 48px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #102b3c,
+            #02080c 65%
+        );
+
+    border-radius: 55px 55px 5px 5px;
+
+    border: 1px solid #6c8998;
+}
+
+/* Front */
+
+.grill {
+    position: absolute;
+    left: 135px;
+    bottom: 48px;
+    width: 70px;
+    height: 35px;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #020202 0px,
+            #020202 4px,
+            #202a30 5px,
+            #020202 8px
+        );
+
+    border-radius: 8px;
+}
+
+/* Scheinwerfer am Auto */
+
+.headlight {
+    position: absolute;
+    bottom: 92px;
+    width: 65px;
+    height: 23px;
+
+    background: #eaffff;
+
+    box-shadow:
+        0 0 10px #fff,
+        0 0 25px #39cfff,
+        0 0 50px #168aff;
+
+    border-radius: 70% 10% 60% 20%;
+}
+
+.headlight.left {
+    left: 32px;
+    transform: rotate(8deg);
+}
+
+.headlight.right {
+    right: 32px;
+    transform: scaleX(-1) rotate(8deg);
+}
+
+/* Stoßfänger */
+
+.bumper {
+    position: absolute;
+    left: 25px;
+    bottom: 28px;
+    width: 270px;
+    height: 22px;
+    background: #050607;
+    border-radius: 50%;
+}
+
+/* Räder */
+
+.wheel {
+    position: absolute;
+    bottom: 5px;
+    width: 58px;
+    height: 58px;
+    background: #020202;
+    border: 8px solid #161b1e;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 5px #555;
+}
+
+.wheel.left {
+    left: 52px;
+}
+
+.wheel.right {
+    right: 52px;
+}
+
+/* =========================
+   AUTO-ANIMATION
+========================= */
+
+@keyframes carApproach {
+
+    0% {
+        opacity: 0;
+        transform:
+            translate(-50%, -50%)
+            scale(.15);
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    65% {
+        transform:
+            translate(-50%, -50%)
+            scale(.65);
+    }
+
+    100% {
+        opacity: 1;
+        transform:
+            translate(-50%, -50%)
+            scale(1);
+    }
+}
+
+@keyframes carSlide {
+
+    0% {
+        transform:
+            translate(-50%, -50%)
+            scale(1)
+            rotate(0deg);
+    }
+
+    35% {
+        transform:
+            translate(-30%, -50%)
+            scale(1.02)
+            rotate(-7deg);
+    }
+
+    70% {
+        transform:
+            translate(-5%, -50%)
+            scale(.98)
+            rotate(-72deg);
+    }
+
+    100% {
+        transform:
+            translate(-5%, -50%)
+            scale(.82)
+            rotate(-90deg);
+    }
+}
+
+/* =========================
+   AUTO CHECK TITEL
+========================= */
+
+.title {
+    position: absolute;
+    left: 50%;
+    bottom: 16%;
+    width: 100%;
+    transform: translateX(-50%) translateY(40px);
+
+    text-align: center;
+
+    font-size: clamp(34px, 10vw, 65px);
+    font-weight: 900;
+    letter-spacing: -2px;
+
+    opacity: 0;
+
+    animation:
+        titleShow 1s ease 7.5s forwards;
+
+    z-index: 10;
+}
+
+.title .auto {
+    color: white;
+    text-shadow: 0 4px 15px #000;
+}
+
+.title .check {
+    color: #ff2020;
+    text-shadow:
+        0 0 12px rgba(255,30,30,.6);
+}
+
+.subtitle {
+    margin-top: 5px;
+    font-size: clamp(14px, 4vw, 22px);
+    color: #ddd;
+    font-weight: 500;
+    letter-spacing: .5px;
+}
+
+.red-line {
+    width: 80%;
+    max-width: 400px;
+    height: 2px;
+    margin: 10px auto 0;
+
+    background: #e51b23;
+
+    box-shadow:
+        0 0 10px #e51b23;
+}
+
+@keyframes titleShow {
+
+    0% {
+        opacity: 0;
+        transform:
+            translateX(-50%)
+            translateY(40px)
+            scale(.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform:
+            translateX(-50%)
+            translateY(0)
+            scale(1);
+    }
+}
+
+/* =========================
+   MENÜ
+========================= */
+
+.menu {
+    position: absolute;
+    left: 50%;
+    bottom: 5%;
+    width: 90%;
+    max-width: 430px;
+
+    transform:
+        translateX(-50%)
+        translateY(100px);
+
+    opacity: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    animation:
+        menuShow 1s cubic-bezier(.2,.8,.2,1) 8.5s forwards;
+
+    z-index: 20;
+}
+
+.menu-button {
+    width: 100%;
+    min-height: 60px;
+
+    border: 1px solid #444;
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(30,35,40,.95),
+            rgba(5,7,9,.95)
+        );
+
+    color: white;
+
+    font-size: 20px;
+    font-weight: 800;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.5);
+
+    cursor: pointer;
+
+    transition:
+        transform .2s,
+        border .2s,
+        box-shadow .2s;
+}
+
+.menu-button:active {
+    transform: scale(.96);
+}
+
+.menu-button.primary {
+    border-color: #e51b23;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e51b23,
+            #8e080d
+        );
+
+    box-shadow:
+        0 0 25px rgba(229,27,35,.35);
+}
+
+.icon {
+    margin-right: 10px;
+}
+
+@keyframes menuShow {
+
+    0% {
+        opacity: 0;
+        transform:
+            translateX(-50%)
+            translateY(100px);
+    }
+
+    100% {
+        opacity: 1;
+        transform:
+            translateX(-50%)
+            translateY(0);
+    }
+}
+
+/* =========================
+   COPYRIGHT
+========================= */
+
+.creator {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+
+    color: #888;
+    font-size: 10px;
+    letter-spacing: 1px;
+
+    opacity: 0;
+    animation: creatorShow 1s ease 8.5s forwards;
+
+    z-index: 30;
+}
+
+@keyframes creatorShow {
+    to {
+        opacity: 1;
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-height: 650px) {
+
+    .car {
+        top: 48%;
+        transform-origin: center;
+    }
+
+    .title {
+        bottom: 18%;
+    }
+
+    .menu {
+        bottom: 3%;
+    }
+
+    .menu-button {
+        min-height: 50px;
+        font-size: 17px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+    <!-- Scheinwerfer im Dunkeln -->
+    <div class="lights">
+
+        <div class="light left"></div>
+        <div class="light right"></div>
+
+    </div>
+
+
+    <!-- Sportwagen -->
+    <div class="car">
+
+        <div class="car-roof"></div>
+
+        <div class="window"></div>
+
+        <div class="car-body"></div>
+
+        <div class="headlight left"></div>
+        <div class="headlight right"></div>
+
+        <div class="grill"></div>
+
+        <div class="bumper"></div>
+
+        <div class="wheel left"></div>
+        <div class="wheel right"></div>
+
+    </div>
+
+
+    <!-- Titel -->
+    <div class="title">
+
+        <div>
+            <span class="auto">AUTO</span>
+            <span class="check"> CHECK</span>
+        </div>
+
+        <div class="red-line"></div>
+
+        <div class="subtitle">
+            Verliere nicht die Übersicht
+        </div>
+
+    </div>
+
+
+    <!-- Hauptmenü -->
+    <div class="menu">
+
+        <button class="menu-button primary"
+                onclick="openCar()">
+            🚗 &nbsp; MEIN AUTO
+        </button>
+
+        <button class="menu-button"
+                onclick="comingSoon()">
+            🔧 &nbsp; REPARATUREN
+        </button>
+
+        <button class="menu-button"
+                onclick="comingSoon()">
+            📅 &nbsp; WARTUNGEN
+        </button>
+
+    </div>
+
+
+    <!-- Entwickler -->
+    <div class="creator">
+        Created by D.M.
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   MEIN AUTO
+========================= */
+
+function openCar() {
+
+    alert(
+        "MEIN AUTO\n\n" +
+        "Hier entsteht später deine Fahrzeugübersicht."
+    );
+
+}
+
+
+/* =========================
+   ZUKÜNFTIGE FUNKTIONEN
+========================= */
+
+function comingSoon() {
+
+    alert(
+        "Diese Funktion bauen wir als Nächstes."
+    );
+
+}
+
+</script>
+
+</body>
+</html>
