@@ -22,7 +22,7 @@ jobs:
       - name: Projektdateien kopieren
         run: |
           cp -r /tmp/autocheck/. .
-          rm -f AutoCheck-Android-Projekt.zip
+          rm -f .github/workflows/build-apk.yml
 
       - name: Änderungen speichern
         run: |
