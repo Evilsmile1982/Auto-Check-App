@@ -1,0 +1,39 @@
+name: APK bauen
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - hauptsächlich
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Android APK bauen
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v4
+
+      - name: Java einrichten
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Gradle einrichten
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: APK bauen
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: APK hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: AutoCheck-APK
+          path: "**/build/outputs/apk/debug/*.apk"
