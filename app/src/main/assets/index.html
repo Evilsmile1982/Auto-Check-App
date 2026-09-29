@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#050607">
+<title>AUTO CHECK</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#020304;color:#fff;font-family:Arial,Helvetica,sans-serif}
+body{touch-action:manipulation}
+#app{
+  position:relative;width:100vw;height:100vh;overflow:hidden;
+  background:#050607;
+}
+.bg{
+  position:absolute;inset:0;
+  background:url("autocheck_background.jpg") center/cover no-repeat;
+  transform:scale(1.015);
+}
+.bg:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.05) 55%,rgba(0,0,0,.55));
+}
+.logo{
+  position:absolute;z-index:5;
+  top:2.5%;left:50%;
+  width:min(78vw,720px);
+  transform:translate(-50%,-140%);
+  opacity:0;
+  animation:logoIn 2.5s cubic-bezier(.18,.8,.22,1) forwards;
+  filter:drop-shadow(0 12px 20px rgba(0,0,0,.65));
+}
+@keyframes logoIn{
+  0%{transform:translate(-50%,-140%);opacity:0}
+  65%{opacity:1}
+  100%{transform:translate(-50%,0);opacity:1}
+}
+.menu{
+  position:absolute;z-index:10;
+  left:50%;bottom:4.2%;
+  width:min(92vw,980px);
+  transform:translateX(-50%);
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.menu button{
+  position:relative;
+  min-height:88px;
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:16px;
+  background:linear-gradient(145deg,rgba(24,28,32,.95),rgba(4,6,8,.96));
+  box-shadow:0 10px 30px rgba(0,0,0,.55), inset 0 1px rgba(255,255,255,.08);
+  color:#fff;
+  cursor:pointer;
+  overflow:hidden;
+  font-weight:800;
+  letter-spacing:.5px;
+  font-size:clamp(11px,2.7vw,16px);
+  transition:transform .16s,box-shadow .16s,border-color .16s;
+  opacity:0;
+}
+.menu button:nth-child(1){animation:fromLeft 2.5s cubic-bezier(.18,.8,.22,1) .05s forwards}
+.menu button:nth-child(2){animation:fromLeft 2.5s cubic-bezier(.18,.8,.22,1) .15s forwards}
+.menu button:nth-child(3){animation:fromLeft 2.5s cubic-bezier(.18,.8,.22,1) .25s forwards}
+.menu button:nth-child(4){animation:fromRight 2.5s cubic-bezier(.18,.8,.22,1) .05s forwards}
+.menu button:nth-child(5){animation:fromRight 2.5s cubic-bezier(.18,.8,.22,1) .15s forwards}
+.menu button:nth-child(6){animation:fromRight 2.5s cubic-bezier(.18,.8,.22,1) .25s forwards}
+.menu button:first-child{
+  background:linear-gradient(145deg,#e51b24,#6b080c);
+  border-color:#ff2630;
+  box-shadow:0 0 26px rgba(235,25,35,.42),inset 0 1px rgba(255,255,255,.14);
+}
+.menu button:active{transform:scale(.97)}
+.icon{display:block;font-size:29px;line-height:1;margin-bottom:8px}
+.label{display:block}
+.menu button:after{
+  content:"";position:absolute;left:12%;right:12%;bottom:7px;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,40,48,.95),transparent);
+  box-shadow:0 0 10px rgba(255,30,40,.75);
+}
+@keyframes fromLeft{
+  0%{opacity:0;transform:translateX(-115vw)}
+  70%{opacity:1}
+  100%{opacity:1;transform:translateX(0)}
+}
+@keyframes fromRight{
+  0%{opacity:0;transform:translateX(115vw)}
+  70%{opacity:1}
+  100%{opacity:1;transform:translateX(0)}
+}
+.modal{
+  position:absolute;z-index:30;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+  background:rgba(0,0,0,.58);
+  opacity:0;pointer-events:none;
+  transition:.2s;
+}
+.modal.open{opacity:1;pointer-events:auto}
+.card{
+  width:min(90vw,460px);
+  background:rgba(7,10,13,.97);
+  border:1px solid #4b4f54;
+  border-radius:20px;
+  padding:24px;
+  box-shadow:0 25px 70px rgba(0,0,0,.8);
+}
+.card h2{font-size:24px;margin-bottom:10px}
+.card p{color:#c7cbd0;line-height:1.5}
+.close{
+  float:right;border:0;background:none;color:#fff;font-size:30px;line-height:1;cursor:pointer;
+}
+@media (min-width:700px){
+  .menu{grid-template-columns:repeat(6,1fr);width:min(94vw,1250px);gap:10px}
+  .menu button{min-height:118px}
+}
+@media (max-width:430px){
+  .logo{width:88vw;top:3.5%}
+  .menu{width:92vw;bottom:4.8%;gap:9px}
+  .menu button{min-height:82px;border-radius:15px;font-size:10.5px}
+  .icon{font-size:25px;margin-bottom:7px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="bg"></div>
+  <img class="logo" src="autocheck_logo.png" alt="AUTO CHECK">
+  <nav class="menu" aria-label="Hauptmenü">
+    <button data-title="MEIN AUTO"><span class="icon">🚗</span><span class="label">MEIN AUTO</span></button>
+    <button data-title="REPARATUREN"><span class="icon">🔧</span><span class="label">REPARATUREN</span></button>
+    <button data-title="WARTUNGEN"><span class="icon">📅</span><span class="label">WARTUNGEN</span></button>
+    <button data-title="KOSTEN"><span class="icon">💶</span><span class="label">KOSTEN</span></button>
+    <button data-title="STATISTIK"><span class="icon">📊</span><span class="label">STATISTIK</span></button>
+    <button data-title="EINSTELLUNGEN"><span class="icon">⚙️</span><span class="label">EINSTELLUNGEN</span></button>
+  </nav>
+
+  <div class="modal" id="modal">
+    <div class="card">
+      <button class="close" id="close">×</button>
+      <h2 id="modalTitle"></h2>
+      <p>Dieser Bereich ist anklickbar und bereit für den nächsten Ausbau.</p>
+    </div>
+  </div>
+</div>
+<script>
+const modal=document.getElementById('modal');
+const title=document.getElementById('modalTitle');
+document.querySelectorAll('.menu button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    title.textContent=btn.dataset.title;
+    modal.classList.add('open');
+  });
+});
+document.getElementById('close').addEventListener('click',()=>modal.classList.remove('open'));
+modal.addEventListener('click',e=>{if(e.target===modal) modal.classList.remove('open')});
+</script>
+</body>
+</html>
