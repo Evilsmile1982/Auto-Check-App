@@ -1,4 +1,4 @@
-name: APK bauen
+name: Android APK erstellen
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build:
-    name: Android APK bauen
+    name: Android APK erstellen
     runs-on: ubuntu-latest
 
     steps:
@@ -26,11 +26,11 @@ jobs:
 
       - name: Gradle einrichten
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
 
-      - name: APK bauen
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
+      - name: Android APK bauen
+        run: gradle assembleDebug
 
       - name: APK hochladen
         uses: actions/upload-artifact@v4
