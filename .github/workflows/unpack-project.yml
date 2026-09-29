@@ -1,0 +1,33 @@
+name: Projekt entpacken
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v4
+
+      - name: ZIP entpacken
+        run: |
+          mkdir -p /tmp/autocheck
+          unzip -o AutoCheck-Android-Projekt.zip -d /tmp/autocheck
+
+      - name: Projektdateien kopieren
+        run: |
+          cp -r /tmp/autocheck/. .
+          rm -f AutoCheck-Android-Projekt.zip
+
+      - name: Änderungen speichern
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Android-Projekt hinzufügen" || echo "Keine Änderungen"
+          git push
